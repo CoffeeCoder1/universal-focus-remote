@@ -12,6 +12,7 @@ EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::E
 	int lineHeight = metrics.lineSpacing();
 	ui->commandLine->setFixedHeight(lineHeight + 10);
 	ui->commandLine->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	connect(board, &ETCEos::userCommandLineChanged, ui->commandLine, [=](QString text) { ui->commandLine->setText(text); });
 	new EosSyntaxHighlighter(ui->commandLine->document());
 
 	// Bind actions to the buttons
@@ -50,7 +51,7 @@ EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::E
 }
 
 EosForm::~EosForm() {
-    delete ui;
+	delete ui;
 }
 
 void EosForm::setupActionButton(QPushButton *button, QBooleanAction *action) {

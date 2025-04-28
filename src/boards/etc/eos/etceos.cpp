@@ -7,10 +7,13 @@
 
 ETCEos::ETCEos(QObject *parent) :
 		QObject{ parent } {
+	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) { qDebug() << message.toString(); });
+
+	iface.connect("/eos/out/cmd", [=](const QOscMessage &msg) { emit userCommandLineChanged(msg.toString()); });
+
 	// Bind the network interface so you can send and get messages
-        iface.setRemoteAddress(QString("127.0.0.1"));
-	iface.setRemotePort(8000);
-	iface.setLocalPort(8001);
+	iface.setRemoteAddress(QString("127.0.0.1"));
+	iface.setRemotePort(3100);
 
 	// Setup keypad actions
 	SETUP_KEY_ACTION(keyAction0, "0", new QKeySequence(Qt::Key_0));
@@ -49,10 +52,10 @@ ETCEos::ETCEos(QObject *parent) :
 }
 
 void ETCEos::setKeyPressed(QString keyName, bool pressed) {
-    // Craft the message you want to send
-    QOscMessage msg(QString("/eos/key/" + keyName), pressed);
+	// Craft the message you want to send
+	QOscMessage msg(QString("/eos/key/" + keyName), pressed);
 
-    iface.send(msg);
+	iface.send(msg);
 }
 
 void ETCEos::setupKeyAction(QBooleanAction *action, QString keyName) {

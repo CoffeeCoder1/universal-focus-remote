@@ -10,7 +10,7 @@ class ETCEos : public QObject {
 public:
 	explicit ETCEos(QObject *parent = nullptr);
 
-	QOscInterface *getInterface() { return &iface; };
+	QOscTcpInterface *getInterface() { return &iface; };
 
 	// Key actions
 	QBooleanAction *keyAction0;
@@ -49,7 +49,10 @@ public:
 public slots:
 	void setKeyPressed(QString keyName, bool pressed);
 
+signals:
+	void userCommandLineChanged(QString text);
+
 private:
-	QOscUdpInterface iface;
+	QOscTcpInterface iface;
 	void setupKeyAction(QBooleanAction *action, QString keyName);
 };
