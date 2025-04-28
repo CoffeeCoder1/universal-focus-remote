@@ -1,0 +1,3 @@
+[submodule "include/QOsc"]
+	path = include/QOsc
+	url = https://github.com/CoffeeCoder1/QOsc.git
