@@ -5,7 +5,7 @@ EosSyntaxHighlighter::EosSyntaxHighlighter(QTextDocument *parent) :
 	HighlightingRule rule;
 
 	modeFormat.setForeground(Qt::darkGray);
-	rule.pattern = QRegularExpression(QStringLiteral("((LIVE)|(BLIND)|(Patch Channel))((Cue)|(Staging Mode)|(Park)|(Preset)|(Event)|(Magic Sheet)|\\s|:)*"));
+	rule.pattern = QRegularExpression(QStringLiteral("((LIVE)|(BLIND)|(Patch Channel)):\\s*((Cue)|(Park)|(Preset)|(Event)|(Magic Sheet))?(\\s|\\d)*((Staging Mode))*\\s*:"));
 	rule.format = modeFormat;
 	highlightingRules.append(rule);
 
