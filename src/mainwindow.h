@@ -1,8 +1,9 @@
 #pragma once
 
-#include "boards/etc/eos/etceos.h"
 #include "boards/etc/eos/ui/eosform.h"
+#include "boardselector.h"
 
+#include <QFile>
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -17,8 +18,17 @@ class MainWindow : public QMainWindow {
 public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
-	ETCEos *board;
 	EosForm *boardForm;
+	BoardSelector *boardSelector;
+
+	bool loadBoard(QString fileName);
+	bool saveBoard(QString fileName) const;
+
+	void read(const QJsonObject &json);
+	void write(QJsonObject &json) const;
+
+public slots:
+	void setBoardForm(EosForm *boardForm);
 
 private:
 	Ui::MainWindow *ui;

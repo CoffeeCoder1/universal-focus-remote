@@ -55,4 +55,5 @@ signals:
 private:
 	QOscTcpInterface iface;
 	void setupKeyAction(QBooleanAction *action, QString keyName);
+	void setupConnection();
 };

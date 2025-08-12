@@ -8,6 +8,7 @@
 ETCEos::ETCEos(QObject *parent) :
 		QObject{ parent } {
 	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) { qDebug() << message.toString(); });
+	connect(&iface, &QOscTcpInterface::connected, this, &ETCEos::setupConnection);
 
 	iface.connect("/eos/out/cmd", [=](const QOscMessage &msg) { emit userCommandLineChanged(msg.toString()); });
 
@@ -60,4 +61,10 @@ void ETCEos::setKeyPressed(QString keyName, bool pressed) {
 
 void ETCEos::setupKeyAction(QBooleanAction *action, QString keyName) {
 	connect(action, &QBooleanAction::valueChanged, this, [=](bool value) { setKeyPressed(keyName, value); });
+}
+
+void ETCEos::setupConnection() {
+	QOscBundle bundle;
+	bundle << QOscMessage("/eos/user", 0);
+	iface.send(bundle);
 }
