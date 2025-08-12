@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow(){
-    delete ui;
+	delete ui;
 }
 
 void MainWindow::setBoardForm(EosForm *boardForm) {
@@ -40,15 +40,20 @@ bool MainWindow::loadBoard(QString fileName) {
 
 	QJsonDocument loadDoc(QJsonDocument::fromJson(boardData));
 
-	EosSettings boardSettingsObject;
-	boardSettingsObject.read(loadDoc.object());
+	EosSettings *boardSettingsObject = new EosSettings();
+	boardSettingsObject->read(loadDoc.object());
+
+	boardSelector->addBoard(boardSettingsObject);
+
+	// Save settings to disk when they change
+	connect(boardSettingsObject, &EosSettings::updated, this, [=]() { saveBoard(boardSettingsObject, fileName); });
 
 	QTextStream(stdout) << "Loaded board "
 						<< loadDoc["name"].toString();
 	return true;
 }
 
-bool MainWindow::saveBoard(QString fileName) const {
+bool MainWindow::saveBoard(EosSettings *boardSettings, QString fileName) const {
 	QFile file(fileName);
 
 	if (!file.open(QIODevice::WriteOnly)) {
@@ -56,10 +61,9 @@ bool MainWindow::saveBoard(QString fileName) const {
 		return false;
 	}
 
-	QJsonObject boardObject;
-	EosSettings boardSettingsObject;
-	boardSettingsObject.write(boardObject);
-	file.write(QJsonDocument(boardObject).toJson());
+	QJsonObject jsonObject;
+	boardSettings->write(jsonObject);
+	file.write(QJsonDocument(jsonObject).toJson());
 
 	return true;
 }

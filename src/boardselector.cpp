@@ -11,7 +11,14 @@ BoardSelector::~BoardSelector() {
 	delete ui;
 }
 
-void BoardSelector::on_pushButton_clicked() {
-	ETCEos *board = new ETCEos();
+void BoardSelector::buttonClicked(EosSettings *boardSettings) {
+	ETCEos *board = new ETCEos(boardSettings);
 	emit boardSelected(new EosForm(board));
+}
+
+void BoardSelector::addBoard(EosSettings *boardSettings) {
+	QPushButton *button = new QPushButton();
+	ui->verticalLayout->addWidget(button);
+	button->setText(boardSettings->getName());
+	connect(button, &QPushButton::clicked, this, [=](bool value) { buttonClicked(boardSettings); });
 }

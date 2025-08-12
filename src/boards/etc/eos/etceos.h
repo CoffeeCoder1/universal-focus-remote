@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../../../actions/qbooleanaction.h"
-#include <QOsc>
+#include "eossettings.h"
 #include <QObject>
+#include <QOsc>
 
 class ETCEos : public QObject {
 	Q_OBJECT
 
 public:
-	explicit ETCEos(QObject *parent = nullptr);
+	explicit ETCEos(EosSettings *settings, QObject *parent = nullptr);
 
 	QOscTcpInterface *getInterface() { return &iface; };
 
@@ -56,4 +57,6 @@ private:
 	QOscTcpInterface iface;
 	void setupKeyAction(QBooleanAction *action, QString keyName);
 	void setupConnection();
+
+	EosSettings *boardSettings;
 };

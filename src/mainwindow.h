@@ -22,7 +22,7 @@ public:
 	BoardSelector *boardSelector;
 
 	bool loadBoard(QString fileName);
-	bool saveBoard(QString fileName) const;
+	bool saveBoard(EosSettings *boardSettings, QString fileName) const;
 
 	void read(const QJsonObject &json);
 	void write(QJsonObject &json) const;

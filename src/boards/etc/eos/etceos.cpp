@@ -5,15 +5,17 @@
 	action->setShortcut(shortcutKey);                    \
 	setupKeyAction(action, keyString);
 
-ETCEos::ETCEos(QObject *parent) :
+ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 		QObject{ parent } {
+	boardSettings = settings;
+
 	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) { qDebug() << message.toString(); });
 	connect(&iface, &QOscTcpInterface::connected, this, &ETCEos::setupConnection);
 
 	iface.connect("/eos/out/cmd", [=](const QOscMessage &msg) { emit userCommandLineChanged(msg.toString()); });
 
 	// Bind the network interface so you can send and get messages
-	iface.setRemoteAddress(QString("127.0.0.1"));
+	iface.setRemoteAddress(boardSettings->getIp());
 	iface.setRemotePort(3100);
 
 	// Setup keypad actions

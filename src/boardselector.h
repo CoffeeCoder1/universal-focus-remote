@@ -14,11 +14,13 @@ public:
 	explicit BoardSelector(QWidget *parent = nullptr);
 	~BoardSelector();
 
+	void addBoard(EosSettings *boardSettings);
+
 signals:
 	void boardSelected(EosForm *boardForm);
 
 private slots:
-	void on_pushButton_clicked();
+	void buttonClicked(EosSettings *boardSettings);
 
 private:
 	Ui::BoardSelector *ui;
