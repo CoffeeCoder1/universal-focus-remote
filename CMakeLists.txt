@@ -48,6 +48,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         src/boardselector.h src/boardselector.cpp src/boardselector.ui
         src/boards/etc/eos/eossettings.h src/boards/etc/eos/eossettings.cpp
+        src/boards/etc/eos/ui/eospatchform.h src/boards/etc/eos/ui/eospatchform.cpp src/boards/etc/eos/ui/eospatchform.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET universal-focus-remote APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

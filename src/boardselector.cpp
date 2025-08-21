@@ -17,8 +17,13 @@ void BoardSelector::buttonClicked(EosSettings *boardSettings) {
 }
 
 void BoardSelector::addBoard(EosSettings *boardSettings) {
+	// Create a board button
 	QPushButton *button = new QPushButton();
 	ui->verticalLayout->addWidget(button);
+
+	// Set up the button
 	button->setText(boardSettings->getName());
+
+	// Connect the button clicked signal
 	connect(button, &QPushButton::clicked, this, [=](bool value) { buttonClicked(boardSettings); });
 }
