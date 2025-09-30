@@ -18,7 +18,7 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 	qDebug() << "Connecting to board with IP"
 			 << boardSettings->getIp();
 	iface.setRemoteAddress(boardSettings->getIp());
-	iface.setRemotePort(3100);
+	iface.setRemotePort(3037);
 
 	// Setup keypad actions
 	SETUP_KEY_ACTION(keyAction0, "0", new QKeySequence(Qt::Key_0));
