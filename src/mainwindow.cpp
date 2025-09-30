@@ -16,7 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(boardSelector, &BoardSelector::boardSelected, this, &MainWindow::setBoardForm);
 	setCentralWidget(boardSelector);
 
-	loadBoard(QStringLiteral("save.json"));
+	if (!loadBoard(QStringLiteral("save.json"))) {
+		qWarning("Creating new board file");
+
+		EosSettings *newBoard = new EosSettings();
+		saveBoard(newBoard, QStringLiteral("save.json"));
+		boardSelector->addBoard(newBoard);
+	}
 }
 
 MainWindow::~MainWindow(){
