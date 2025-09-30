@@ -1,3 +1,6 @@
 [submodule "include/QOsc"]
 	path = include/QOsc
 	url = https://github.com/CoffeeCoder1/QOsc.git
+[submodule "include/QDarkStyleSheet"]
+	path = include/QDarkStyleSheet
+	url = https://github.com/ColinDuquesnoy/QDarkStyleSheet.git
