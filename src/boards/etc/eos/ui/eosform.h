@@ -19,10 +19,4 @@ public:
 
 private:
 	Ui::EosForm *ui;
-	/**
-	 * @brief Binds a boolean action to a button.
-	 * @param button The button to bind.
-	 * @param action The action to bind.
-	 */
-	void setupActionButton(QPushButton *button, QBooleanAction *action);
 };

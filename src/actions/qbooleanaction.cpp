@@ -33,3 +33,9 @@ void QBooleanAction::setValue(bool value) {
 
 	emit valueChanged(value);
 }
+
+void QBooleanAction::setupActionButton(QPushButton *button) {
+	connect(button, &QAbstractButton::pressed, this, [=]() { this->setValue(true); });
+	connect(button, &QAbstractButton::released, this, [=]() { this->setValue(false); });
+	connect(this, &QBooleanAction::valueChanged, button, [=](bool value) { button->setDown(value); });
+}

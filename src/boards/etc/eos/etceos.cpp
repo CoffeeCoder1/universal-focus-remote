@@ -15,6 +15,8 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 	iface.connect("/eos/out/cmd", [=](const QOscMessage &msg) { emit userCommandLineChanged(msg.toString()); });
 
 	// Bind the network interface so you can send and get messages
+	qDebug() << "Connecting to board with IP"
+			 << boardSettings->getIp();
 	iface.setRemoteAddress(boardSettings->getIp());
 	iface.setRemotePort(3100);
 
@@ -85,6 +87,8 @@ void ETCEos::setupKeyAction(QBooleanAction *action, QString keyName) {
 }
 
 void ETCEos::setupConnection() {
+	qDebug() << "Connected to board";
+
 	QOscBundle bundle;
 	bundle << QOscMessage("/eos/user", 1);
 	iface.send(bundle);
