@@ -2,10 +2,12 @@
 #include "./ui_mainwindow.h"
 
 #include "boards/etc/eos/eossettings.h"
+#include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QStyleFactory>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,12 +18,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(boardSelector, &BoardSelector::boardSelected, this, &MainWindow::setBoardForm);
 	setCentralWidget(boardSelector);
 
-	if (!loadBoard(QStringLiteral("save.json"))) {
-		qWarning("Creating new board file");
+	QString boardDirPath = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
+								   .filePath("boards");
 
-		EosSettings *newBoard = new EosSettings();
-		saveBoard(newBoard, QStringLiteral("save.json"));
-		boardSelector->addBoard(newBoard);
+	QDir *boardDir = new QDir(boardDirPath);
+	boardDir->mkpath(boardDirPath);
+
+	QStringList boardFileNames = boardDir->entryList(QDir::Files | QDir::Readable);
+	for (const QString &boardName : std::as_const(boardFileNames)) {
+		loadBoard(boardDir->filePath(boardName));
 	}
 }
 
@@ -54,8 +59,8 @@ bool MainWindow::loadBoard(QString fileName) {
 	// Save settings to disk when they change
 	connect(boardSettingsObject, &EosSettings::updated, this, [=]() { saveBoard(boardSettingsObject, fileName); });
 
-	QTextStream(stdout) << "Loaded board "
-						<< loadDoc["name"].toString();
+	qDebug() << "Loaded board"
+			 << loadDoc["name"].toString();
 	return true;
 }
 
