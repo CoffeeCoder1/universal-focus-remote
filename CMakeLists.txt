@@ -29,30 +29,45 @@ set(
     src/actions/qbooleanaction.cpp
 
     src/main.cpp
+
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
 
     src/boards/etc/eos/etceos.cpp
     src/boards/etc/eos/etceos.h
-    src/boards/etc/eos/etceos.h
-    src/boards/etc/eos/etceos.cpp
+
     src/boards/etc/eos/ui/eosform.h
     src/boards/etc/eos/ui/eosform.cpp
     src/boards/etc/eos/ui/eosform.ui
+
     src/boards/etc/eos/ui/eossyntaxhighlighter.h
     src/boards/etc/eos/ui/eossyntaxhighlighter.cpp
+
+    src/boardselector.h
+    src/boardselector.cpp
+    src/boardselector.ui
+
+    src/boards/etc/eos/eossettings.h
+    src/boards/etc/eos/eossettings.cpp
+
+    src/boards/etc/eos/ui/eospatchform.h
+    src/boards/etc/eos/ui/eospatchform.cpp
+    src/boards/etc/eos/ui/eospatchform.ui
+
+    src/boards/etc/eos/ui/eoskeypadform.h
+    src/boards/etc/eos/ui/eoskeypadform.cpp
+    src/boards/etc/eos/ui/eoskeypadform.ui
+
+    src/addboarddialog.h
+    src/addboarddialog.cpp
+    src/addboarddialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(universal-focus-remote
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        src/boardselector.h src/boardselector.cpp src/boardselector.ui
-        src/boards/etc/eos/eossettings.h src/boards/etc/eos/eossettings.cpp
-        src/boards/etc/eos/ui/eospatchform.h src/boards/etc/eos/ui/eospatchform.cpp src/boards/etc/eos/ui/eospatchform.ui
-        src/boards/etc/eos/ui/eoskeypadform.h src/boards/etc/eos/ui/eoskeypadform.cpp src/boards/etc/eos/ui/eoskeypadform.ui
-        src/addboarddialog.h src/addboarddialog.cpp src/addboarddialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET universal-focus-remote APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
