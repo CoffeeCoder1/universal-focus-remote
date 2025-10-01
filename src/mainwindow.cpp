@@ -2,7 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include "boards/etc/eos/eossettings.h"
-#include <QDir>
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
@@ -16,12 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	boardSelector = new BoardSelector();
 	connect(boardSelector, &BoardSelector::boardSelected, this, &MainWindow::setBoardForm);
+	connect(boardSelector, &BoardSelector::boardCreated, this, &MainWindow::onBoardCreated);
 	setCentralWidget(boardSelector);
 
 	QString boardDirPath = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
 								   .filePath("boards");
 
-	QDir *boardDir = new QDir(boardDirPath);
+	boardDir = new QDir(boardDirPath);
 	boardDir->mkpath(boardDirPath);
 
 	QStringList boardFileNames = boardDir->entryList(QDir::Files | QDir::Readable);
@@ -39,8 +40,8 @@ void MainWindow::setBoardForm(EosForm *boardForm) {
 	setCentralWidget(boardForm);
 }
 
-bool MainWindow::loadBoard(QString fileName) {
-	QFile file(fileName);
+bool MainWindow::loadBoard(QString filePath) {
+	QFile file(filePath);
 
 	if (!file.open(QIODevice::ReadOnly)) {
 		qWarning("Couldn't open board file.");
@@ -57,7 +58,7 @@ bool MainWindow::loadBoard(QString fileName) {
 	boardSelector->addBoard(boardSettingsObject);
 
 	// Save settings to disk when they change
-	connect(boardSettingsObject, &EosSettings::updated, this, [=]() { saveBoard(boardSettingsObject, fileName); });
+	connect(boardSettingsObject, &EosSettings::updated, this, [=]() { saveBoard(boardSettingsObject, filePath); });
 
 	qDebug() << "Loaded board"
 			 << loadDoc["name"].toString();
@@ -65,7 +66,7 @@ bool MainWindow::loadBoard(QString fileName) {
 }
 
 bool MainWindow::saveBoard(EosSettings *boardSettings, QString fileName) const {
-	QFile file(fileName);
+	QFile file(boardDir->filePath(fileName));
 
 	if (!file.open(QIODevice::WriteOnly)) {
 		qWarning("Couldn't open board file.");
@@ -77,4 +78,14 @@ bool MainWindow::saveBoard(EosSettings *boardSettings, QString fileName) const {
 	file.write(QJsonDocument(jsonObject).toJson());
 
 	return true;
+}
+
+void MainWindow::onBoardCreated(EosSettings *boardSettings) {
+	QString fileName = QUuid::createUuid().toString(QUuid::WithoutBraces) + ".json";
+
+	// Save settings to disk
+	saveBoard(boardSettings, fileName);
+
+	// Save settings to disk when they change
+	connect(boardSettings, &EosSettings::updated, this, [=]() { saveBoard(boardSettings, fileName); });
 }

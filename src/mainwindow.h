@@ -3,6 +3,7 @@
 #include "boards/etc/eos/ui/eosform.h"
 #include "boardselector.h"
 
+#include <QDir>
 #include <QFile>
 #include <QMainWindow>
 
@@ -21,7 +22,7 @@ public:
 	EosForm *boardForm;
 	BoardSelector *boardSelector;
 
-	bool loadBoard(QString fileName);
+	bool loadBoard(QString filePath);
 	bool saveBoard(EosSettings *boardSettings, QString fileName) const;
 
 	void read(const QJsonObject &json);
@@ -32,4 +33,6 @@ public slots:
 
 private:
 	Ui::MainWindow *ui;
+	void onBoardCreated(EosSettings *boardSettings);
+	QDir *boardDir;
 };

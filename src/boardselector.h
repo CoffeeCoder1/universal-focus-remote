@@ -1,5 +1,6 @@
 #pragma once
 
+#include "addboarddialog.h"
 #include "boards/etc/eos/ui/eosform.h"
 #include <QWidget>
 
@@ -18,10 +19,12 @@ public:
 
 signals:
 	void boardSelected(EosForm *boardForm);
+	void boardCreated(EosSettings *boardSettings);
 
 private slots:
 	void buttonClicked(EosSettings *boardSettings);
 
 private:
 	Ui::BoardSelector *ui;
+	AddBoardDialog *addBoardDialog;
 };
