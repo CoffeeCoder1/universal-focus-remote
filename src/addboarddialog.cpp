@@ -19,5 +19,8 @@ void AddBoardDialog::onAccepted() {
 	settings->setName(ui->boardNameEdit->text());
 	settings->setIp(ui->hostnameEdit->text());
 
+	ui->boardNameEdit->clear();
+	ui->hostnameEdit->clear();
+
 	emit boardCreated(settings);
 }
