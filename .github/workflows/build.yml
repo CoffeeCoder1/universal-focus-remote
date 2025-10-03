@@ -28,7 +28,14 @@ jobs:
         run: mkdir build
 
       - name: Generate build files
-        run: qt-cmake -G Ninja -S . -B build
+        run: qt-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
-      - name: Build with Ninja
-        run: cd build && ninja
+      - name: Build with CMake
+        run: cmake --build build --target install
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: build-${{ matrix.os }}
+          path: output
+          if-no-files-found: error
