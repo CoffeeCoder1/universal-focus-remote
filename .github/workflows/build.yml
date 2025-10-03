@@ -23,6 +23,8 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+        with:
+          cache: true
       
       - name: Generate build files
         run: qt-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
