@@ -13,6 +13,7 @@ jobs:
           - os: 'ubuntu-latest'
           - os: 'ubuntu-24.04-arm'
           - os: 'windows-latest'
+            arch: 'win64_mingw'
           - os: 'macos-latest'
     
     steps:
@@ -25,7 +26,7 @@ jobs:
         uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
         with:
           cache: true
-          arch: win64_mingw
+          arch: ${{ matrix.arch }}
       
       - name: Generate build files
         run: qt-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
