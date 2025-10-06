@@ -22,7 +22,7 @@ jobs:
             os: 'windows-latest'
             arch: 'win64_mingw'
             target: 'desktop'
-            generator: 'MinGW Makefiles'
+            generator: 'Ninja'
           - name: 'macos-arm'
             os: 'macos-latest'
             target: 'desktop'
