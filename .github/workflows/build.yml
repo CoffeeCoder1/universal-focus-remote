@@ -80,8 +80,10 @@ jobs:
       - name: Prepare MacOS bundle for distribution
         if: ${{ runner.os == 'macOS' }}
         run: |
-          macdeployqt output/universal-focus-remote.app
+          mkdir -p output/universal-focus-remote.app/Contents/Frameworks
           cp build/include/QOsc/src/libQOsc.dylib output/universal-focus-remote.app/Contents/Frameworks
+          macdeployqt output/universal-focus-remote.app -dmg
+          rm -rf output/universal-focus-remote.app
 
       - name: Prepare Windows executable for distribution
         if: ${{ runner.os == 'Windows' }}
