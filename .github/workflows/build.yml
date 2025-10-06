@@ -42,7 +42,7 @@ jobs:
           target: ${{ matrix.target }}
       
       - name: Generate build files
-        run: qt-cmake -G ${{ matrix.generator }} -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
+        run: qt-cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
       - name: Build with CMake
         run: cmake --build build --target install
