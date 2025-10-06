@@ -22,6 +22,7 @@ jobs:
             os: 'windows-latest'
             arch: 'win64_mingw'
             target: 'desktop'
+            shell: 'msys2 {0}'
             generator: 'Ninja'
           - name: 'macos-arm'
             os: 'macos-latest'
@@ -40,11 +41,28 @@ jobs:
           cache: true
           arch: ${{ matrix.arch }}
           target: ${{ matrix.target }}
+
+      - name: Update and install MSYS2 (64bit)
+        if: ${{ runner.os == 'Windows' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          release: true
+          update: false
+          path-type: inherit
+          install: >-
+            wget
+            unzip
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gcc-libs
+            mingw-w64-x86_64-cmake
       
       - name: Generate build files
+        shell: ${{ matrix.shell }}
         run: qt-cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
       - name: Build with CMake
+        shell: ${{ matrix.shell }}
         run: cmake --build build --target install
 
       - name: Prepare MacOS bundle for distribution
