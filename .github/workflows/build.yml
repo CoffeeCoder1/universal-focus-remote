@@ -24,7 +24,6 @@ jobs:
             os: 'windows-latest'
             arch: 'win64_mingw'
             target: 'desktop'
-            shell: 'msys2 {0}'
             generator: 'Ninja'
 
           - name: 'macos-arm'
@@ -59,13 +58,23 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-gcc-libs
             mingw-w64-x86_64-cmake
-      
+
       - name: Generate build files
-        shell: ${{ matrix.shell }}
+        if: ${{ runner.os != 'Windows' }}
+        run: qt-cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
+      
+      - name: Generate build files for Windows
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
         run: qt-cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
       - name: Build with CMake
-        shell: ${{ matrix.shell }}
+        if: ${{ runner.os != 'Windows' }}
+        run: cmake --build build --target install
+
+      - name: Build with CMake on Windows
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
         run: cmake --build build --target install
 
       - name: Prepare MacOS bundle for distribution
