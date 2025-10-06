@@ -104,6 +104,10 @@ set_target_properties(universal-focus-remote PROPERTIES
 )
 
 include(GNUInstallDirs)
+install(TARGETS QOsc
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 install(TARGETS universal-focus-remote
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
