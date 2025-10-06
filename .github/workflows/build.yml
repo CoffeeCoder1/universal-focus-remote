@@ -10,10 +10,26 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: 'ubuntu-latest'
-          - os: 'ubuntu-24.04-arm'
-          #- os: 'windows-latest'
-          - os: 'macos-latest'
+          - name: 'linux-x86'
+            os: 'ubuntu-latest'
+            target: 'desktop'
+            generator: 'Ninja'
+
+          - name: 'linux-arm'
+            os: 'ubuntu-24.04-arm'
+            target: 'desktop'
+            generator: 'Ninja'
+
+          - name: 'windows-x86'
+            os: 'windows-latest'
+            arch: 'win64_mingw'
+            target: 'desktop'
+            generator: 'Ninja'
+
+          - name: 'macos-arm'
+            os: 'macos-latest'
+            target: 'desktop'
+            generator: 'Ninja'
     
     steps:
       - name: Checkout
@@ -25,20 +41,54 @@ jobs:
         uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
         with:
           cache: true
-      
+          arch: ${{ matrix.arch }}
+          target: ${{ matrix.target }}
+
+      - name: Update and install MSYS2 (64bit)
+        if: ${{ runner.os == 'Windows' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          release: true
+          update: false
+          path-type: inherit
+          install: >-
+            wget
+            unzip
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gcc-libs
+            mingw-w64-x86_64-cmake
+
       - name: Generate build files
-        run: qt-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
+        if: ${{ runner.os != 'Windows' }}
+        run: qt-cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
+      
+      - name: Generate build files for Windows
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
+        run: cmake -G "${{ matrix.generator }}" -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
       - name: Build with CMake
+        if: ${{ runner.os != 'Windows' }}
+        run: cmake --build build --target install
+
+      - name: Build with CMake on Windows
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
         run: cmake --build build --target install
 
       - name: Prepare MacOS bundle for distribution
         if: ${{ runner.os == 'macOS' }}
         run: macdeployqt output/universal-focus-remote.app
 
+      - name: Prepare Windows executable for distribution
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
+        run: windeployqt output/bin/universal-focus-remote.exe
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: build-${{ matrix.os }}
+          name: build-${{ matrix.name }}
           path: output
           if-no-files-found: error
