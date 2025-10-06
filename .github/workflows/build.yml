@@ -10,12 +10,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: 'ubuntu-latest'
-          - os: 'ubuntu-24.04-arm'
-          - os: 'windows-latest'
+          - name: 'linux-x86'
+            os: 'ubuntu-latest'
+            target: 'desktop'
+          - name: 'linux-arm'
+            os: 'ubuntu-24.04-arm'
+            target: 'desktop'
+          - name: 'windows-x86'
+            os: 'windows-latest'
             arch: 'win64_mingw'
             target: 'desktop'
-          - os: 'macos-latest'
+          - name: 'macos-arm'
+            os: 'macos-latest'
+            target: 'desktop'
     
     steps:
       - name: Checkout
@@ -43,6 +50,6 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: build-${{ matrix.os }}
+          name: build-${{ matrix.name }}
           path: output
           if-no-files-found: error
