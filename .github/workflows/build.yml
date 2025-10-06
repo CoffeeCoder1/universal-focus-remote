@@ -81,6 +81,11 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: macdeployqt output/universal-focus-remote.app
 
+      - name: Prepare Windows executable for distribution
+        if: ${{ runner.os == 'Windows' }}
+        shell: msys2 {0}
+        run: windeployqt output/bin/universal-focus-remote.exe
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
