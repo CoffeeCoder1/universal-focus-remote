@@ -53,8 +53,6 @@ jobs:
           update: false
           path-type: inherit
           install: >-
-            wget
-            unzip
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-gcc-libs
             mingw-w64-x86_64-cmake
