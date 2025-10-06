@@ -13,16 +13,20 @@ jobs:
           - name: 'linux-x86'
             os: 'ubuntu-latest'
             target: 'desktop'
+            generator: 'Ninja'
           - name: 'linux-arm'
             os: 'ubuntu-24.04-arm'
             target: 'desktop'
+            generator: 'Ninja'
           - name: 'windows-x86'
             os: 'windows-latest'
             arch: 'win64_mingw'
             target: 'desktop'
+            generator: 'MinGW Makefiles'
           - name: 'macos-arm'
             os: 'macos-latest'
             target: 'desktop'
+            generator: 'Ninja'
     
     steps:
       - name: Checkout
@@ -38,7 +42,7 @@ jobs:
           target: ${{ matrix.target }}
       
       - name: Generate build files
-        run: qt-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
+        run: qt-cmake -G ${{ matrix.generator }} -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output
 
       - name: Build with CMake
         run: cmake --build build --target install
