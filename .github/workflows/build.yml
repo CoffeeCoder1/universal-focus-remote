@@ -13,10 +13,12 @@ jobs:
           - name: 'linux-x86'
             os: 'ubuntu-latest'
             target: 'desktop'
+            shell: 'bash'
             generator: 'Ninja'
           - name: 'linux-arm'
             os: 'ubuntu-24.04-arm'
             target: 'desktop'
+            shell: 'bash'
             generator: 'Ninja'
           - name: 'windows-x86'
             os: 'windows-latest'
@@ -27,6 +29,7 @@ jobs:
           - name: 'macos-arm'
             os: 'macos-latest'
             target: 'desktop'
+            shell: 'bash'
             generator: 'Ninja'
     
     steps:
