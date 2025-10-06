@@ -53,6 +53,7 @@ jobs:
           update: false
           path-type: inherit
           install: >-
+            zip
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-gcc-libs
             mingw-w64-x86_64-cmake
@@ -86,7 +87,10 @@ jobs:
       - name: Prepare Windows executable for distribution
         if: ${{ runner.os == 'Windows' }}
         shell: msys2 {0}
-        run: windeployqt output/bin/universal-focus-remote.exe
+        run: |
+          windeployqt output/bin/universal-focus-remote.exe
+          zip -r output/universal-focus-remote.zip output/bin
+          rm -rf output/bin
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.6.2
