@@ -56,6 +56,11 @@ QBoardTabArea::QBoardTabArea(QWidget *parent) :
 			layout->setCurrentIndex(1);
 		}
 	});
+
+	// Setup double click to remove tabs
+	connect(tabWidget, &QTabWidget::tabBarDoubleClicked, this, [=](int index) {
+		tabWidget->removeTab(index);
+	});
 }
 
 void QBoardTabArea::addTabToList(const QString name, std::function<QWidget *()> tabCreatedCallback) {
