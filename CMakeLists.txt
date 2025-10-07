@@ -37,6 +37,13 @@ set(
     src/mainwindow.cpp
     src/mainwindow.ui
 
+    src/widgets/tabs/qboardtabarea.h
+    src/widgets/tabs/qboardtabarea.cpp
+
+    src/widgets/tabs/qnewtabdialog.h
+    src/widgets/tabs/qnewtabdialog.cpp
+    src/widgets/tabs/qnewtabdialog.ui
+
     src/boards/etc/eos/etceos.h
     src/boards/etc/eos/etceos.cpp
 
