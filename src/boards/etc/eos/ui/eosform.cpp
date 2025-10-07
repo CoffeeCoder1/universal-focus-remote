@@ -3,7 +3,9 @@
 #include "eospatchform.h"
 #include "eossyntaxhighlighter.h"
 #include "ui_eosform.h"
-#include <QMdiSubWindow>
+
+#include <QTabBar>
+#include <QTabWidget>
 
 EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::EosForm) {
 	this->board = board;
@@ -18,14 +20,16 @@ EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::E
 	connect(board, &ETCEos::userCommandLineChanged, ui->commandLine, [=](QString text) { ui->commandLine->setText(text.replace('#', "♦")); });
 	new EosSyntaxHighlighter(ui->commandLine->document());
 
-	QWidget *keypadWidget = new EosKeypadForm(this);
-	ui->tabArea->layout()->addWidget(keypadWidget);
+	// Set up the tab widget
+	QTabWidget *tabArea = new QTabWidget();
+	tabArea->setMovable(true);
+	ui->verticalLayout->insertWidget(1, tabArea);
 
-	//QWidget *patchWidget = new EosPatchForm(this);
-	//QMdiSubWindow *subWindow2 = new QMdiSubWindow;
-	//subWindow2->setWidget(patchWidget);
-	//subWindow2->setAttribute(Qt::WA_DeleteOnClose);
-	//ui->mdiArea->addSubWindow(subWindow2);
+	QWidget *keypadWidget = new EosKeypadForm(this);
+	tabArea->addTab(keypadWidget, "Keypad");
+
+	QWidget *patchWidget = new EosPatchForm(this);
+	tabArea->addTab(patchWidget, "Patch");
 }
 
 EosForm::~EosForm() {
