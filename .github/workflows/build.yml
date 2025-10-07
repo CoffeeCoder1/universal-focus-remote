@@ -79,8 +79,10 @@ jobs:
       - name: Prepare Linux bundle for distribution
         if: ${{ runner.os == 'Linux' }}
         run: |
-          tar -czf output/universal-focus-remote-${{ matrix.name }}.tar.gz output/bin
-          rm -rf output/bin
+          cd output/bin
+          tar -czf ../universal-focus-remote-${{ matrix.name }}.tar.gz .
+          cd ..
+          rm -rf bin
 
       - name: Prepare MacOS bundle for distribution
         if: ${{ runner.os == 'macOS' }}
