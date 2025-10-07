@@ -19,18 +19,13 @@ EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::E
 	new EosSyntaxHighlighter(ui->commandLine->document());
 
 	QWidget *keypadWidget = new EosKeypadForm(this);
-	QMdiSubWindow *subWindow1 = new QMdiSubWindow;
-	subWindow1->setWidget(keypadWidget);
-	subWindow1->setAttribute(Qt::WA_DeleteOnClose);
-	ui->mdiArea->addSubWindow(subWindow1);
+	ui->tabArea->layout()->addWidget(keypadWidget);
 
 	//QWidget *patchWidget = new EosPatchForm(this);
 	//QMdiSubWindow *subWindow2 = new QMdiSubWindow;
 	//subWindow2->setWidget(patchWidget);
 	//subWindow2->setAttribute(Qt::WA_DeleteOnClose);
 	//ui->mdiArea->addSubWindow(subWindow2);
-
-	ui->mdiArea->tileSubWindows();
 }
 
 EosForm::~EosForm() {
