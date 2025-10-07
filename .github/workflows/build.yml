@@ -76,6 +76,12 @@ jobs:
         shell: msys2 {0}
         run: cmake --build build --target install
 
+      - name: Prepare Linux bundle for distribution
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          tar -czf output/universal-focus-remote-${{ matrix.name }}.tar.gz output/bin
+          rm -rf output/bin
+
       - name: Prepare MacOS bundle for distribution
         if: ${{ runner.os == 'macOS' }}
         run: |
