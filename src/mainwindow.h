@@ -33,6 +33,7 @@ public slots:
 
 private:
 	Ui::MainWindow *ui;
+	void setupBoard(EosSettings *boardSettings, QString fileName);
 	void onBoardCreated(EosSettings *boardSettings);
 	QDir *boardDir;
 };

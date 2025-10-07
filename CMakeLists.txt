@@ -21,21 +21,24 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/widgets)
 set(
   PROJECT_SOURCES
     src/style/style.qrc
+    
+    src/widgets/qdualeventbutton.h
+    src/widgets/qdualeventbutton.cpp
 
-    src/widgets/qsquarepushbutton.cpp
     src/widgets/qsquarepushbutton.h
+    src/widgets/qsquarepushbutton.cpp
 
     src/actions/qbooleanaction.h
     src/actions/qbooleanaction.cpp
 
     src/main.cpp
 
-    src/mainwindow.cpp
     src/mainwindow.h
+    src/mainwindow.cpp
     src/mainwindow.ui
 
-    src/boards/etc/eos/etceos.cpp
     src/boards/etc/eos/etceos.h
+    src/boards/etc/eos/etceos.cpp
 
     src/boards/etc/eos/ui/eosform.h
     src/boards/etc/eos/ui/eosform.cpp

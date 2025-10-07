@@ -23,6 +23,7 @@ signals:
 
 private slots:
 	void buttonClicked(EosSettings *boardSettings);
+	void buttonRightClicked(EosSettings *boardSettings);
 
 private:
 	Ui::BoardSelector *ui;

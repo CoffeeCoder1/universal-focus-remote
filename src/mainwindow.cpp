@@ -57,8 +57,7 @@ bool MainWindow::loadBoard(QString filePath) {
 
 	boardSelector->addBoard(boardSettingsObject);
 
-	// Save settings to disk when they change
-	connect(boardSettingsObject, &EosSettings::updated, this, [=]() { saveBoard(boardSettingsObject, filePath); });
+	setupBoard(boardSettingsObject, filePath);
 
 	qDebug() << "Loaded board"
 			 << loadDoc["name"].toString();
@@ -80,12 +79,19 @@ bool MainWindow::saveBoard(EosSettings *boardSettings, QString fileName) const {
 	return true;
 }
 
+void MainWindow::setupBoard(EosSettings *boardSettings, QString fileName) {
+	// Save settings to disk when they change
+	connect(boardSettings, &EosSettings::updated, this, [=]() { saveBoard(boardSettings, fileName); });
+
+	// Delete settings from disk when they are removed
+	connect(boardSettings, &EosSettings::removed, this, [=]() { QFile::remove(boardDir->filePath(fileName)); });
+}
+
 void MainWindow::onBoardCreated(EosSettings *boardSettings) {
 	QString fileName = QUuid::createUuid().toString(QUuid::WithoutBraces) + ".json";
 
 	// Save settings to disk
 	saveBoard(boardSettings, fileName);
 
-	// Save settings to disk when they change
-	connect(boardSettings, &EosSettings::updated, this, [=]() { saveBoard(boardSettings, fileName); });
+	setupBoard(boardSettings, fileName);
 }

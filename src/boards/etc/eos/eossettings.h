@@ -13,6 +13,7 @@ public:
 
 	void read(const QJsonObject &json);
 	void write(QJsonObject &json) const;
+	void remove();
 
 	void setName(QString name);
 	QString getName() const;
@@ -23,6 +24,7 @@ public:
 
 signals:
 	void updated();
+	void removed();
 	void nameChanged(QString name);
 	void ipChanged(QString ip);
 

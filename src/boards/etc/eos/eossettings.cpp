@@ -30,6 +30,11 @@ void EosSettings::write(QJsonObject &json) const {
 	json["ip"] = ip;
 }
 
+void EosSettings::remove() {
+	emit removed();
+	delete this;
+}
+
 void EosSettings::setName(QString name) {
 	this->name = name;
 	emit nameChanged(name);

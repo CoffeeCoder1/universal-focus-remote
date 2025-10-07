@@ -1,6 +1,8 @@
 #include "boardselector.h"
 #include "ui_boardselector.h"
 
+#include "widgets/qdualeventbutton.h"
+
 BoardSelector::BoardSelector(QWidget *parent) :
 		QWidget(parent),
 		ui(new Ui::BoardSelector) {
@@ -23,14 +25,22 @@ void BoardSelector::buttonClicked(EosSettings *boardSettings) {
 	emit boardSelected(new EosForm(board));
 }
 
+void BoardSelector::buttonRightClicked(EosSettings *boardSettings) {
+	boardSettings->remove();
+}
+
 void BoardSelector::addBoard(EosSettings *boardSettings) {
 	// Create a board button
-	QPushButton *button = new QPushButton();
+	QDualEventButton *button = new QDualEventButton();
 	ui->boardList->layout()->addWidget(button);
 
 	// Set up the button
 	button->setText(boardSettings->getName());
 
-	// Connect the button clicked signal
-	connect(button, &QPushButton::clicked, this, [=](bool value) { buttonClicked(boardSettings); });
+	// Connect the button clicked signals
+	connect(button, &QDualEventButton::clicked, this, [=](bool value) { buttonClicked(boardSettings); });
+	connect(button, &QDualEventButton::secondaryClick, this, [=]() { buttonRightClicked(boardSettings); });
+
+	// Connect the board removed signal
+	connect(boardSettings, &EosSettings::removed, this, [=]() { ui->boardList->layout()->removeWidget(button); });
 }
