@@ -80,7 +80,7 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           cd output/bin
-          tar -czf ../universal-focus-remote-${{ matrix.name }}.tar.gz .
+          tar -czf ../universal-focus-remote-${{ matrix.name }}.tar.gz *
           cd ..
           rm -rf bin
 
