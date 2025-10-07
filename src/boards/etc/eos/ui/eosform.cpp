@@ -24,6 +24,7 @@ EosForm::EosForm(ETCEos* board, QWidget *parent) : QWidget(parent), ui(new Ui::E
 
 	// Set up the tab area
 	QBoardTabArea *tabArea = new QBoardTabArea();
+	tabArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	ui->verticalLayout->insertWidget(1, tabArea);
 
 	// Set up the tab list

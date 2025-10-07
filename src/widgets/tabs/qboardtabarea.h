@@ -4,7 +4,7 @@
 
 #include <QTabWidget>
 
-class QBoardTabArea : public QTabWidget {
+class QBoardTabArea : public QWidget {
 	Q_OBJECT
 
 public:
@@ -13,6 +13,7 @@ public:
 	void addTabToList(const QString name, std::function<QWidget *()> tabCreatedCallback);
 
 private:
+	QTabWidget *tabWidget;
 	QList<tab> *tabList;
 	void showTabDialog();
 };
