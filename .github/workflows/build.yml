@@ -99,7 +99,7 @@ jobs:
           cd output
           windeployqt bin/universal-focus-remote.exe
           cd bin
-          zip -r ../universal-focus-remote.zip .
+          zip -r ../universal-focus-remote-${{ matrix.name }}.zip .
           cd ..
           rm -rf bin
 
