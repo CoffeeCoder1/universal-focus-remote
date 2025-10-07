@@ -119,6 +119,7 @@ jobs:
         uses: actions/download-artifact@v5.0.0
         with:
           path: dist
+          merge-multiple: true
   
       - name: Create release
         uses: softprops/action-gh-release@v2.3.4
