@@ -72,6 +72,9 @@ set(
     src/addboarddialog.h
     src/addboarddialog.cpp
     src/addboarddialog.ui
+
+    src/boards/etc/eos/datatypes/eoschannel.h
+    src/boards/etc/eos/datatypes/eoschannel.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
