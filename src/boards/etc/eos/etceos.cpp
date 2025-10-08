@@ -19,7 +19,7 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 	iface.setRemoteAddress(boardSettings->getIp());
 	iface.setRemotePort(3037);
 
-	// Setup keypad actions
+	// Set up keypad actions
 	SETUP_KEY_ACTION(keyAction0, "0", new QKeySequence(Qt::Key_0));
 	SETUP_KEY_ACTION(keyAction1, "1", new QKeySequence(Qt::Key_1));
 	SETUP_KEY_ACTION(keyAction2, "2", new QKeySequence(Qt::Key_2));
@@ -72,6 +72,70 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 	SETUP_KEY_ACTION(keyActionSneak, "sneak", new QKeySequence(Qt::Key_N));
 	SETUP_KEY_ACTION(keyActionSlash, "\\", new QKeySequence(Qt::Key_Slash));
 	SETUP_KEY_ACTION(keyActionTrace, "trace", new QKeySequence(Qt::Key_J));
+
+	// Syncronize patch data
+	iface.connect("/eos/out/get/patch/count", [=](const QOscMessage &message) {
+		QOscBundle bundle;
+		for (int i = 0; i < message.toInt(0); i++) {
+			bundle << QOscMessage("/eos/get/patch/index", i);
+		}
+		iface.send(bundle);
+	});
+
+	// Set up patch data
+	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) {
+		static QRegularExpression expression("\\/eos\\/out\\/get\\/patch\\/(\\d+)\\/(\\d+)\\/list\\/(\\d+)\\/(\\d+)");
+		QRegularExpressionMatch match = expression.match(message.pattern());
+		if (match.hasMatch()) {
+			EosChannel *channel = new EosChannel(this);
+			channel->channelNumber = match.captured(1).toInt();
+			channel->partNumber = match.captured(2).toInt();
+			qint32 listIndex = match.captured(3).toInt();
+			qint32 listCount = match.captured(4).toInt();
+			channel->uid = message.toString(1);
+			channel->label = message.toString(2);
+			channel->fixtureManufacturer = message.toString(3);
+			channel->fixtureModel = message.toString(4);
+			channel->address = message.toInt(5);
+			channel->intensityAddress = message.toInt(6);
+			channel->level = message.toInt(7);
+			channel->oscGel = message.toString(8);
+			channel->text1 = message.toString(9);
+			channel->text2 = message.toString(10);
+			channel->text3 = message.toString(11);
+			channel->text4 = message.toString(12);
+			channel->text5 = message.toString(13);
+			channel->text6 = message.toString(14);
+			channel->text7 = message.toString(15);
+			channel->text8 = message.toString(16);
+			channel->text9 = message.toString(17);
+			channel->text10 = message.toString(18);
+			channel->partCount = message.toInt(19);
+
+			channelList[channel->uid] = channel;
+
+			emit channel->updated();
+		}
+	});
+
+	// Patch notifications
+	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) {
+		static QRegularExpression expression("\\/eos\\/out\\/notify\\/patch\\/list\\/(\\d+)\\/(\\d+)");
+		QRegularExpressionMatch match = expression.match(message.pattern());
+		if (match.hasMatch()) {
+			// Get the number of items in the patch. When the count is recieved, a synchronization is triggered by the code above.
+			// TODO: Only query items that changed (this will likely require some changes on ETC's side)
+			QOscMessage msg("/eos/get/patch/count", 1);
+			iface.send(msg);
+
+			qint32 listIndex = match.captured(1).toInt();
+			qint32 listCount = match.captured(2).toInt();
+		}
+	});
+}
+
+QMap<QString, EosChannel *> ETCEos::getChannelData() {
+	return channelList;
 }
 
 void ETCEos::setKeyPressed(QString keyName, bool pressed) {
@@ -90,6 +154,11 @@ void ETCEos::setupConnection() {
 
 	QOscBundle bundle;
 	bundle << QOscMessage("/eos/user", 1);
+	bundle << QOscMessage("/eos/subscribe", 1);
+
+	// Get data counts for synchronization
+	bundle << QOscMessage("/eos/get/patch/count", 1);
+
 	iface.send(bundle);
 }
 

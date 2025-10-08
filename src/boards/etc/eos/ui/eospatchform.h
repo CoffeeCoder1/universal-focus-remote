@@ -16,4 +16,6 @@ public:
 
 private:
 	Ui::EosPatchForm *ui;
+
+	EosForm *eosForm;
 };

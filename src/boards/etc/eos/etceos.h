@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../actions/qbooleanaction.h"
+#include "datatypes/eoschannel.h"
 #include "eossettings.h"
 #include <QObject>
 #include <QOsc>
@@ -12,6 +13,8 @@ public:
 	explicit ETCEos(EosSettings *settings, QObject *parent = nullptr);
 
 	QOscTcpInterface *getInterface() { return &iface; };
+
+	QMap<QString, EosChannel *> getChannelData();
 
 	// Key actions
 	QBooleanAction *keyAction0;
@@ -79,4 +82,6 @@ private:
 	void setupConnection();
 
 	EosSettings *boardSettings;
+
+	QMap<QString, EosChannel *> channelList;
 };
