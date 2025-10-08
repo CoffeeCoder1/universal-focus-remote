@@ -9,7 +9,6 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 		QObject{ parent } {
 	boardSettings = settings;
 
-	connect(&iface, &QOscInterface::messageReceived, this, [=](QOscMessage message) { qDebug() << message.toString(); });
 	connect(&iface, &QOscTcpInterface::connected, this, &ETCEos::setupConnection);
 
 	iface.connect("/eos/out/cmd", [=](const QOscMessage &msg) { emit userCommandLineChanged(msg.toString()); });
