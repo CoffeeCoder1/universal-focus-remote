@@ -124,6 +124,10 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 		static QRegularExpression expression("\\/eos\\/out\\/notify\\/patch\\/list\\/(\\d+)\\/(\\d+)");
 		QRegularExpressionMatch match = expression.match(message.pattern());
 		if (match.hasMatch()) {
+			// This isn't ideal but it works
+			// TODO: Implement a system to only remove channels that no longer exist instead of rebuilding the entire list every sync
+			channelList.clear();
+
 			// Get the number of items in the patch. When the count is recieved, a synchronization is triggered by the code above.
 			// TODO: Only query items that changed (this will likely require some changes on ETC's side)
 			QOscMessage msg("/eos/get/patch/count", 1);

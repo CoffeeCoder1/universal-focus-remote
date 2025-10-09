@@ -79,6 +79,7 @@ QVariant QPatchDataModel::data(const QModelIndex &index, int role) const {
 }
 
 void QPatchDataModel::setChannelData(QMap<QString, EosChannel *> channelData) {
+	// TODO: Implement some more advanced logic here so that only items that changed get updated
 	beginResetModel();
 
 	this->channelData = channelData;
