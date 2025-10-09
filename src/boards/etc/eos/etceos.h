@@ -75,6 +75,7 @@ public slots:
 
 signals:
 	void userCommandLineChanged(QString text);
+	void patchUpdated();
 
 private:
 	QOscTcpInterface iface;

@@ -61,13 +61,13 @@ set(
     src/boards/etc/eos/eossettings.h
     src/boards/etc/eos/eossettings.cpp
 
-    src/boards/etc/eos/ui/eospatchform.h
-    src/boards/etc/eos/ui/eospatchform.cpp
-    src/boards/etc/eos/ui/eospatchform.ui
+    src/boards/etc/eos/ui/patch/eospatchform.h
+    src/boards/etc/eos/ui/patch/eospatchform.cpp
+    src/boards/etc/eos/ui/patch/eospatchform.ui
 
-    src/boards/etc/eos/ui/eoskeypadform.h
-    src/boards/etc/eos/ui/eoskeypadform.cpp
-    src/boards/etc/eos/ui/eoskeypadform.ui
+    src/boards/etc/eos/ui/keypad/eoskeypadform.h
+    src/boards/etc/eos/ui/keypad/eoskeypadform.cpp
+    src/boards/etc/eos/ui/keypad/eoskeypadform.ui
 
     src/addboarddialog.h
     src/addboarddialog.cpp
@@ -75,6 +75,9 @@ set(
 
     src/boards/etc/eos/datatypes/eoschannel.h
     src/boards/etc/eos/datatypes/eoschannel.cpp
+
+    src/boards/etc/eos/ui/patch/qpatchdatamodel.h
+    src/boards/etc/eos/ui/patch/qpatchdatamodel.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

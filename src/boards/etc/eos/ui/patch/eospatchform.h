@@ -1,6 +1,6 @@
 #pragma once
 
-#include "eosform.h"
+#include "../eosform.h"
 #include <QWidget>
 
 namespace Ui {

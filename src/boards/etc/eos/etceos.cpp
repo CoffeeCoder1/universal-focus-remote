@@ -115,6 +115,7 @@ ETCEos::ETCEos(EosSettings *settings, QObject *parent) :
 			channelList[channel->uid] = channel;
 
 			emit channel->updated();
+			emit patchUpdated();
 		}
 	});
 

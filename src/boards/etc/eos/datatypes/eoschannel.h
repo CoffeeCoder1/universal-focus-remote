@@ -27,7 +27,6 @@ public:
 	void setText8(QString newText8);
 	void setText9(QString newText9);
 	void setText10(QString newText10);
-	void setPartCount(qint32 newPartCount);
 
 	qint32 channelNumber;
 	qint32 partNumber;
@@ -50,6 +49,34 @@ public:
 	QString text9;
 	QString text10;
 	qint32 partCount;
+
+	friend constexpr bool operator<(const EosChannel &l, const EosChannel &r) {
+		if (l.channelNumber < r.channelNumber)
+			return true;
+		if (l.channelNumber > r.channelNumber)
+			return false;
+
+		if (l.partNumber < r.partNumber)
+			return true;
+		if (l.partNumber > r.partNumber)
+			return false;
+
+		return false; // are equal
+	}
+
+	static bool compare(const EosChannel *l, const EosChannel *r) {
+		if (l->channelNumber < r->channelNumber)
+			return true;
+		if (l->channelNumber > r->channelNumber)
+			return false;
+
+		if (l->partNumber < r->partNumber)
+			return true;
+		if (l->partNumber > r->partNumber)
+			return false;
+
+		return false; // are equal
+	}
 
 signals:
 	void updated();

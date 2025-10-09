@@ -1,7 +1,7 @@
 #include "eosform.h"
-#include "eoskeypadform.h"
-#include "eospatchform.h"
 #include "eossyntaxhighlighter.h"
+#include "keypad/eoskeypadform.h"
+#include "patch/eospatchform.h"
 #include "ui_eosform.h"
 
 #include "../widgets/tabs/qboardtabarea.h"
